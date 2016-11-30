@@ -1,10 +1,13 @@
 package com.example.web;
 
 import com.example.model.Question;
+import com.example.model.QuestionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
 
@@ -16,16 +19,24 @@ public class QuestionController {
 
     ArrayList<Question> questions = new ArrayList<>();
 
-    @GetMapping("/")
+    @Autowired
+    private QuestionRepository questionRepository;
+
+    @RequestMapping("qnas/form")
+    public String form(){
+        return "/qna/form";
+    }
+
+    @GetMapping("")
     public String list(Model model){
-        model.addAttribute("questions", questions);
+        model.addAttribute("questions", questionRepository.findAll());
         return "index";
     }
 
-    @PostMapping("/qna/create")
+    @PostMapping("qnas/create")
     public String create(Question question){
         System.out.println("====>question: " + question.toString());
-        questions.add(question);
+        questionRepository.save(question);
         return "redirect:/";
     }
 }
