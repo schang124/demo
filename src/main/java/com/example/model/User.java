@@ -27,6 +27,16 @@ public class User {
     @Column(length=30)
     private String email;
 
+//    data compare & update
+    public void update(User user){
+        if(password.equals(user.password))
+            throw new IllegalArgumentException("비밀번호가 다릅니다");
+
+        this.name = user.name;
+        this.email = user.email;
+    }
+
+//    getter & setter
     public long getId() {
         return id;
     }
@@ -66,15 +76,6 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public void updatable(User user){
-        if(password.equals(user.password)) {
-            this.id = user.id;
-            this.name = user.name;
-            this.email = user.email;
-        }
-    }
-
 
     @Override
     public String toString(){

@@ -38,13 +38,19 @@ public class UserController {
     @GetMapping("{id}/update")
     public String update(@PathVariable Long id,  Model model){
         model.addAttribute("user", userRepository.findOne(id));
-        return "/user/update";
+        return "/user/updateForm";
     }
 
     @PostMapping("{id}/edit")
     public String update(@PathVariable Long id, User user){
         User dbUser = userRepository.findOne(id);
-        dbUser.updatable(user);
+        try{
+            dbUser.update(user);
+        } catch(IllegalArgumentException e){
+            e.printStackTrace();
+
+        }
+
         userRepository.save(dbUser);
 
         return "redirect:/users";
