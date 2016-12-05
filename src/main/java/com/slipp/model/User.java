@@ -1,4 +1,4 @@
-package com.example.model;
+package com.slipp.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +13,7 @@ import javax.persistence.Id;
 public class User {
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     @Column(unique=true, length=20, nullable=false)
     private String userId;
@@ -27,16 +27,30 @@ public class User {
     @Column(length=30)
     private String email;
 
-//    data compare & update
+    // data compare & update
     public void update(User user){
-        if(password.equals(user.password))
+        if(!matchPassword(user.password))
             throw new IllegalArgumentException("비밀번호가 다릅니다");
 
         this.name = user.name;
         this.email = user.email;
     }
 
-//    getter & setter
+    // id check
+    public boolean matchId(Long newId) {
+        return this.id.equals(newId);
+    }
+
+    // password check
+    public boolean matchPassword(String newPassword) {
+        if(this.password == null)
+            return false;
+
+        return password.equals(newPassword);
+    }
+
+
+    // getter & setter
     public long getId() {
         return id;
     }
@@ -81,6 +95,7 @@ public class User {
     public String toString(){
         return "User[id=" + id + "userId=" + userId + ", password=" + password + ", name=" + name + ", email=" + email + "]";
     }
+
 
 
 }
